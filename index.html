@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Toko Dwi Sandy - Elegant Premium UI</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+  <div class="sidebar-header">
+    <span>🛍️ Toko Dwi Sandy</span>
+    <span onclick="closeSidebar()">✕</span>
+  </div>
+  <div class="sidebar-menu">
+    <div onclick="window.location.href='index.html';closeSidebar()">🏠 Beranda</div>
+    <div onclick="document.querySelector('.catbox').scrollIntoView({behavior:'smooth'});closeSidebar()">📦 Kategori Produk</div>
+    <div onclick="document.getElementById('searchInput').focus();closeSidebar()">🔍 Pencarian</div>
+    <div onclick="window.location.href='keranjang.html';closeSidebar()">🛒 Keranjang</div>
+    <div onclick="window.location.href='pesanan.html';closeSidebar()">🚚 Pesanan</div>
+    <div onclick="toggleDarkMode();closeSidebar()">🌙 Night Mode</div>
+    <div onclick="openLogin();closeSidebar()">👤 Login</div>
+  </div>
+</div>
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-left" onclick="openSidebar()">
+    <div class="logo-badge">☰</div>
+    <span>Toko Dwi Sandy</span>
+  </div>
+
+  <div class="nav-search">
+    <input id="searchInput" placeholder="Cari beras, gula, minyak, snack..." onkeyup="searchItem()" />
+    <span class="search-icon">🔍</span>
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-btn" onclick="window.location.href='index.html'">Beranda</div>
+    <div class="nav-btn" onclick="document.querySelector('.catbox').scrollIntoView({behavior:'smooth'})">Kategori</div>
+    <div class="nav-btn" onclick="window.location.href='pesanan.html'">Pesanan</div>
+    <div class="nav-btn" onclick="window.location.href='keranjang.html'">🛒 <span id="cartCount" class="cart-badge">0</span></div>
+    
+    <div id="loginBtn" class="nav-btn" onclick="openLogin()">Login</div>
+    
+    <div id="userMenuBtn" class="user-menu hidden">
+      <div class="user-avatar" onclick="toggleUserDropdown()" id="userAvatar">U</div>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-header">
+          <p id="dropdownUsername">User</p>
+          <span id="dropdownEmail">user@email.com</span>
+        </div>
+        <div class="user-dropdown-menu">
+          <div class="user-dropdown-item" onclick="window.location.href='pesanan.html';closeUserDropdown()">📋 Pesanan Saya</div>
+          <div class="user-dropdown-item" onclick="toggleDarkMode();closeUserDropdown()">🌙 Night Mode</div>
+          <div class="user-dropdown-item user-dropdown-logout" onclick="logoutCustomer()">🚪 Logout</div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="adminMenuBtn" class="user-menu hidden">
+      <div class="user-avatar" onclick="toggleAdminDropdown()" id="adminAvatar">A</div>
+      <div class="user-dropdown" id="adminDropdown">
+        <div class="user-dropdown-header">
+          <p id="adminDropdownUsername">Admin</p>
+          <span>Administrator</span>
+        </div>
+        <div class="user-dropdown-menu">
+          <div class="user-dropdown-item" onclick="window.location.href='admin.html';closeAdminDropdown()">⚙️ Dashboard</div>
+          <div class="user-dropdown-item" onclick="toggleDarkMode();closeAdminDropdown()">🌙 Night Mode</div>
+          <div class="user-dropdown-item user-dropdown-logout" onclick="logoutAdmin()">🚪 Logout</div>
+        </div>
+      </div>
+    </div>
+    
+    <button id="themeBtn" class="theme-btn" onclick="toggleDarkMode()" title="Night Mode">🌙</button>
+  </div>
+</nav>
+
+<!-- LOGIN -->
+<div id="loginModal" class="login-modal">
+  <div class="login-box">
+    <div class="login-left">
+      <h2>Belanja lebih mudah</h2>
+      <p>Masuk untuk pengalaman belanja yang lebih cepat, rapi, dan nyaman.</p>
+    </div>
+    <div class="login-right">
+      <div class="close" onclick="closeLogin()">✕</div>
+      <h2 id="formTitle">Login</h2>
+      
+      <div id="authMode" class="auth-tabs">
+        <button class="auth-tab-btn active" onclick="setAuthMode('customer')">Customer</button>
+        <button class="auth-tab-btn" onclick="setAuthMode('admin')">Admin</button>
+      </div>
+
+      <div id="customerAuth">
+        <input id="email" placeholder="Email" />
+        <input id="password" type="password" placeholder="Password" />
+        <input id="username" class="hidden" placeholder="Username" />
+        <button onclick="submitAuth('customer')">Masuk</button>
+        <p style="margin-top:16px;font-size:14px;color:var(--muted)">
+          <span id="switchText">Belum punya akun?</span>
+          <b style="cursor:pointer;color:var(--primary-2)" onclick="toggleAuth()" id="switchBtn">Daftar</b>
+        </p>
+      </div>
+
+      <div id="adminAuth" class="hidden">
+        <input id="adminEmail" placeholder="Email Admin" />
+        <input id="adminPassword" type="password" placeholder="Password Admin" />
+        <button onclick="submitAuth('admin')">Login Admin</button>
+        <p style="margin-top:16px;font-size:12px;color:var(--muted);text-align:center">
+          Demo: fadhilaanisah@gmail.com / dhila2006
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL PRODUK MODAL -->
+<div id="detailModal" class="detail-modal">
+  <div class="detail-box">
+    <span class="detail-close" onclick="closeDetail()">✕</span>
+    <div class="detail-header"><h2>Detail Produk</h2></div>
+    <img id="detailImg" class="detail-img" />
+    <h2 id="detailName"></h2>
+    <p id="detailPrice" class="detail-price"></p>
+    <div class="detail-info">
+      <p><b>Kategori:</b> <span id="detailCategory"></span></p>
+      <p><b>Deskripsi:</b><br><span id="detailDescription"></span></p>
+      <p><b>Ketersediaan:</b> <span id="detailStock" style="color:var(--primary-2);font-weight:900"></span></p>
+    </div>
+    <div class="quantity-control">
+      <button class="quantity-btn" onclick="detailQuantity--; if(detailQuantity<1) detailQuantity=1; updateDetailQuantityDisplay()">−</button>
+      <span class="quantity-display" id="detailQtyDisplay">1</span>
+      <button class="quantity-btn" onclick="detailQuantity++; updateDetailQuantityDisplay()">+</button>
+    </div>
+    <button class="detail-add" onclick="addFromDetail()">Tambahkan ke Keranjang</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<section id="homePage" class="container">
+  <div class="hero">
+    <div>
+      <h1>Belanja harian jadi lebih cepat, nyaman, dan hemat.</h1>
+      <p>Toko Dwi Sandy menyediakan kebutuhan harian, snack, perlengkapan rumah tangga, perawatan, dan produk lainnya dengan tampilan modern serta fitur belanja yang mudah digunakan.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.querySelector('.catbox').scrollIntoView({behavior:'smooth'})">Mulai Belanja</button>
+        <button class="btn-soft" onclick="window.location.href='keranjang.html'">Lihat Keranjang</button>
+      </div>
+    </div>
+    <div class="hero-panel">
+      <h3>Promo Hari Ini</h3>
+      <div class="mini-stat"><span>Gratis Ongkir</span><b>Area Terdekat</b></div>
+      <div class="mini-stat"><span>Pembayaran</span><b>QRIS / Cash</b></div>
+      <div class="mini-stat"><span>Produk</span><b>Fresh & Lengkap</b></div>
+    </div>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-card"><div class="info-icon">⚡</div><div><b>Cepat</b><span>Checkout lebih praktis</span></div></div>
+    <div class="info-card"><div class="info-icon">🛒</div><div><b>Lengkap</b><span>Banyak kategori produk</span></div></div>
+    <div class="info-card"><div class="info-icon">🌙</div><div><b>Night Mode</b><span>Nyaman dipakai malam</span></div></div>
+    <div class="info-card"><div class="info-icon">❤️</div><div><b>Favorit</b><span>Simpan produk pilihan</span></div></div>
+  </div>
+
+  <div class="market">
+    <div class="catbox">
+      <h3>Semua Kategori</h3>
+      <div class="cat" onclick="showProduk('Kebutuhan Harian',this)">🍚 Kebutuhan Harian</div>
+      <div class="cat" onclick="showProduk('Makanan Ringan',this)">🍫 Makanan & Minuman Ringan</div>
+      <div class="cat" onclick="showProduk('Rumah Tangga',this)">🧹 Keperluan Rumah Tangga</div>
+      <div class="cat" onclick="showProduk('Perawatan',this)">🧴 Kesehatan & Perawatan</div>
+      <div class="cat" onclick="showProduk('Lainnya',this)">✨ Produk Lainnya</div>
+    </div>
+
+    <div>
+      <div class="section-head">
+        <h2>Produk Pilihan</h2>
+        <button class="utility-btn" onclick="showFavorites()">❤️ Favorit</button>
+      </div>
+      <div class="sortbar">
+        <button onclick="sortHarga('asc',this)">Termurah</button>
+        <button onclick="sortHarga('desc',this)">Termahal</button>
+        <button onclick="filterStock(this)">Stok Tersedia</button>
+        <button onclick="loadAll()">Reset</button>
+      </div>
+      <div id="productList" class="grid"></div>
+    </div>
+  </div>
+
+  <div class="store-info">
+    <h3>Informasi Toko</h3>
+    <p><b>Alamat:</b><br>Jl. Bulak Cumpat Gang 2 No 30</p><br>
+    <p><b>Kontak:</b><br><a href="https://wa.me/6285895810391" target="_blank">085895810391</a></p>
+    <p style="font-size:13px;color:var(--muted);margin-top:12px">©️ Toko Dwi Sandy</p>
+  </div>
+</section>
+
+<button id="scrollTopBtn" class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="notif" class="notif hidden"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

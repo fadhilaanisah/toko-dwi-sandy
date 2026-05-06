@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Checkout - Toko Dwi Sandy</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+  <div class="sidebar-header">
+    <span>🛍️ Toko Dwi Sandy</span>
+    <span onclick="closeSidebar()">✕</span>
+  </div>
+  <div class="sidebar-menu">
+    <div onclick="window.location.href='index.html';closeSidebar()">🏠 Beranda</div>
+    <div onclick="window.location.href='index.html';closeSidebar()">📦 Kategori Produk</div>
+    <div onclick="window.location.href='index.html';closeSidebar()">🔍 Pencarian</div>
+    <div onclick="window.location.href='keranjang.html';closeSidebar()">🛒 Keranjang</div>
+    <div onclick="window.location.href='pesanan.html';closeSidebar()">🚚 Pesanan</div>
+    <div onclick="toggleDarkMode();closeSidebar()">🌙 Night Mode</div>
+    <div onclick="openLogin();closeSidebar()">👤 Login</div>
+  </div>
+</div>
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-left" onclick="openSidebar()">
+    <div class="logo-badge">☰</div>
+    <span>Toko Dwi Sandy</span>
+  </div>
+
+  <div class="nav-search">
+    <input id="searchInput" placeholder="Cari beras, gula, minyak, snack..." />
+    <span class="search-icon">🔍</span>
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-btn" onclick="window.location.href='index.html'">Beranda</div>
+    <div class="nav-btn" onclick="window.location.href='index.html'">Kategori</div>
+    <div class="nav-btn" onclick="window.location.href='pesanan.html'">Pesanan</div>
+    <div class="nav-btn" onclick="window.location.href='keranjang.html'">🛒 <span id="cartCount" class="cart-badge">0</span></div>
+    
+    <div id="loginBtn" class="nav-btn" onclick="openLogin()">Login</div>
+    
+    <div id="userMenuBtn" class="user-menu hidden">
+      <div class="user-avatar" onclick="toggleUserDropdown()" id="userAvatar">U</div>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-header">
+          <p id="dropdownUsername">User</p>
+          <span id="dropdownEmail">user@email.com</span>
+        </div>
+        <div class="user-dropdown-menu">
+          <div class="user-dropdown-item" onclick="window.location.href='pesanan.html';closeUserDropdown()">📋 Pesanan Saya</div>
+          <div class="user-dropdown-item" onclick="toggleDarkMode();closeUserDropdown()">🌙 Night Mode</div>
+          <div class="user-dropdown-item user-dropdown-logout" onclick="logoutCustomer()">🚪 Logout</div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="adminMenuBtn" class="user-menu hidden">
+      <div class="user-avatar" onclick="toggleAdminDropdown()" id="adminAvatar">A</div>
+      <div class="user-dropdown" id="adminDropdown">
+        <div class="user-dropdown-header">
+          <p id="adminDropdownUsername">Admin</p>
+          <span>Administrator</span>
+        </div>
+        <div class="user-dropdown-menu">
+          <div class="user-dropdown-item" onclick="window.location.href='admin.html';closeAdminDropdown()">⚙️ Dashboard</div>
+          <div class="user-dropdown-item" onclick="toggleDarkMode();closeAdminDropdown()">🌙 Night Mode</div>
+          <div class="user-dropdown-item user-dropdown-logout" onclick="logoutAdmin()">🚪 Logout</div>
+        </div>
+      </div>
+    </div>
+    
+    <button id="themeBtn" class="theme-btn" onclick="toggleDarkMode()" title="Night Mode">🌙</button>
+  </div>
+</nav>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="login-modal">
+  <div class="login-box">
+    <div class="login-left">
+      <h2>Belanja lebih mudah</h2>
+      <p>Masuk untuk pengalaman belanja yang lebih cepat, rapi, dan nyaman.</p>
+    </div>
+    <div class="login-right">
+      <div class="close" onclick="closeLogin()">✕</div>
+      <h2 id="formTitle">Login</h2>
+      
+      <div id="authMode" class="auth-tabs">
+        <button class="auth-tab-btn active" onclick="setAuthMode('customer')">Customer</button>
+        <button class="auth-tab-btn" onclick="setAuthMode('admin')">Admin</button>
+      </div>
+
+      <div id="customerAuth">
+        <input id="email" placeholder="Email" />
+        <input id="password" type="password" placeholder="Password" />
+        <input id="username" class="hidden" placeholder="Username" />
+        <button onclick="submitAuth('customer')">Masuk</button>
+        <p style="margin-top:16px;font-size:14px;color:var(--muted)">
+          <span id="switchText">Belum punya akun?</span>
+          <b style="cursor:pointer;color:var(--primary-2)" onclick="toggleAuth()" id="switchBtn">Daftar</b>
+        </p>
+      </div>
+
+      <div id="adminAuth" class="hidden">
+        <input id="adminEmail" placeholder="Email Admin" />
+        <input id="adminPassword" type="password" placeholder="Password Admin" />
+        <button onclick="submitAuth('admin')">Login Admin</button>
+        <p style="margin-top:16px;font-size:12px;color:var(--muted);text-align:center">
+          Demo: fadhilaanisah@gmail.com / dhila2006
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT PAGE -->
+<section class="container">
+  <div class="section-head">
+    <h2>Konfirmasi Pembayaran</h2>
+  </div>
+  <div class="checkout-layout">
+    <div class="checkout-main">
+      <div id="checkoutOrder"></div>
+    </div>
+  </div>
+</section>
+
+<button id="scrollTopBtn" class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="notif" class="notif hidden"></div>
+
+<script src="script.js"></script>
+<script>
+// Load checkout when page loads
+window.addEventListener('load', function() {
+  let paymentMethod = sessionStorage.getItem('paymentMethod') || 'cash';
+  renderCheckout(paymentMethod);
+  sessionStorage.removeItem('paymentMethod');
+});
+</script>
+</body>
+</html>
